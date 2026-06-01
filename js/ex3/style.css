@@ -1,0 +1,105 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #a9ffda;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.converter-container {
+    background: white;
+    border-radius: 20px;
+    padding: 40px;
+    max-width: 500px;
+    width: 100%;
+}
+
+h1 {
+    text-align: center;
+    color: #000000;
+    margin-bottom: 10px;
+    font-size: 28px;
+}
+
+.input-group {
+    margin-bottom: 25px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #000000;
+    font-size: 16px;
+}
+
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+input {
+    width: 100%;
+    padding: 15px;
+    font-size: 18px;
+    border: 2px solid #eaeaea;
+    border-radius: 10px;
+    transition: all 0.3s;
+    font-family: monospace;
+}
+
+input:focus {
+    outline: none;
+    border-color: #a9ffda;
+}
+
+.unit {
+    position: absolute;
+    right: 15px;
+    font-size: 16px;
+    color: #eaeaea;
+    font-weight: 600;
+    pointer-events: none;
+}
+
+.formula-info {
+    background: #eaeaea;
+    padding: 15px;
+    border-radius: 10px;
+    margin-top: 20px;
+    text-align: center;
+}
+
+.formula-info p {
+    color: #000000;
+    font-size: 14px;
+    margin: 5px 0;
+}
+
+.formula-info strong {
+    color: #000000;
+}
+
+@media (max-width: 600px) {
+    .converter-container {
+        padding: 25px;
+    }
+    
+    h1 {
+        font-size: 24px;
+    }
+    
+    input {
+        font-size: 16px;
+        padding: 12px;
+    }
+}

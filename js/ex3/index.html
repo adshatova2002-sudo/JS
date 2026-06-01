@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Конвертер скорости</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.16/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <div class="converter-container">
+            <h1>Конвертер скорости</h1>
+            <div class="input-group">
+                <label>Скорость км/ч</label>
+                <div class="input-wrapper">
+                    <input type="number" step="any" v-model="kmh" placeholder="Введите значение">
+                    <span class="unit">км/ч</span>
+                </div>
+            </div>
+            <div class="input-group">
+                <label>Скорость м/с</label>
+                <div class="input-wrapper">
+                    <input type="number" step="any" v-model="ms" placeholder="Введите значение">
+                    <span class="unit">м/с</span>
+                </div>
+            </div>
+            <div class="formula-info">
+                <p><strong>Формулы перевода:</strong></p>
+                <p>км/ч → м/с: <strong>значение ÷ 3.6</strong></p>
+                <p>м/с → км/ч: <strong>значение × 3.6</strong></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        new Vue({
+            el: '#app',
+            data: 
+            {
+                kmh: '',
+                ms: ''  
+            },
+            watch: 
+            {
+                kmh: function(newValue) 
+                {
+                    if (newValue === '' || newValue === null) 
+                    {
+                        this.ms = '';
+                        return;
+                    }
+                    
+                    let kmhValue = parseFloat(newValue);
+                    
+                    if (!isNaN(kmhValue)) 
+                    {
+                        let msValue = kmhValue / 3.6;
+                        this.ms = Math.round(msValue * 100) / 100;
+                    } 
+                    else 
+                    {
+                        this.ms = '';
+                    }
+                },
+                
+                ms: function(newValue) {
+                    if (newValue === '' || newValue === null) 
+                    {
+                        this.kmh = '';
+                        return;
+                    }
+                    
+                    let msValue = parseFloat(newValue);
+                    
+                    if (!isNaN(msValue)) 
+                    {
+                        let kmhValue = msValue * 3.6;
+                        this.kmh = Math.round(kmhValue * 100) / 100;
+                    } 
+                    else 
+                    {
+                        this.kmh = '';
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

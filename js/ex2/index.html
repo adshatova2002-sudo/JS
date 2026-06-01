@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Форма</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Личная информация</h1>        
+        <form id="userForm">
+            <div class="form-group">
+                <label for="surname">Фамилия</label>
+                <input type="text" id="surname" placeholder="Фамилия">
+                <div class="error-message" id="surnameError">Введите фамилию</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="name">Имя</label>
+                <input type="text" id="name" placeholder="Имя">
+                <div class="error-message" id="nameError">Введите имя</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Электронная почта</label>
+                <input type="email" id="email" placeholder="i@example.ru">
+                <div class="error-message" id="emailError">Email введен неверно</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="phone">Телефон</label>
+                <input type="tel" id="phone" placeholder="+7 (9ХХ) ХХХ-ХХ-ХХ">
+                <div class="error-message" id="phoneError">Введите номер телефона (минимум 10 цифр)</div>
+            </div>
+            
+            <div class="button-group">
+                <button type="submit" class="btn-submit">Отправить</button>
+                <button type="button" class="btn-theme" id="themeButton">Ночной режим</button>
+            </div>
+        </form>
+        
+        <div id="resultBlock" class="result-card">
+            <div class="result-header">Введенные данные</div>
+            <div class="result-content">
+                <div class="result-item">
+                    <div class="result-label">Фамилия:</div>
+                    <div class="result-value" id="displaySurname"></div>
+                </div>
+                <div class="result-item">
+                    <div class="result-label">Имя:</div>
+                    <div class="result-value" id="displayName"></div>
+                </div>
+                <div class="result-item">
+                    <div class="result-label">Email:</div>
+                    <div class="result-value" id="displayEmail"></div>
+                </div>
+                <div class="result-item">
+                    <div class="result-label">Телефон:</div>
+                    <div class="result-value" id="displayPhone"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>        
+        const form = document.getElementById('userForm');
+        const themeButton = document.getElementById('themeButton');
+        const resultBlock = document.getElementById('resultBlock');
+
+        const surnameInput = document.getElementById('surname');
+        const nameInput = document.getElementById('name');
+        const emailInput = document.getElementById('email');
+        const phoneInput = document.getElementById('phone');
+
+        const displaySurname = document.getElementById('displaySurname');
+        const displayName = document.getElementById('displayName');
+        const displayEmail = document.getElementById('displayEmail');
+        const displayPhone = document.getElementById('displayPhone');
+
+        const surnameError = document.getElementById('surnameError');
+        const nameError = document.getElementById('nameError');
+        const emailError = document.getElementById('emailError');
+        const phoneError = document.getElementById('phoneError');
+
+        function isValidEmail(email) 
+        {
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailPattern.test(email);
+        }
+
+        function isValidPhone(phone) 
+        {
+            const digits = phone.replace(/\D/g, '');
+            return digits.length >= 10 && digits.length <= 15;
+        }
+
+        function hideErrors() 
+        {
+            surnameError.style.display = 'none';
+            nameError.style.display = 'none';
+            emailError.style.display = 'none';
+            phoneError.style.display = 'none';
+            surnameInput.classList.remove('error-input');
+            nameInput.classList.remove('error-input');
+            emailInput.classList.remove('error-input');
+            phoneInput.classList.remove('error-input');
+        }
+
+        function showError(inputElement, errorElement) 
+        {
+            inputElement.classList.add('error-input');
+            errorElement.style.display = 'block';
+        }
+
+        function showResult(surname, name, email, phone) 
+        {
+            displaySurname.textContent = surname;
+            displayName.textContent = name;
+            displayEmail.textContent = email;
+            displayPhone.textContent = phone;
+            resultBlock.style.display = 'block';
+            resultBlock.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        form.addEventListener('submit', function(e) 
+        {
+            e.preventDefault();
+            const surname = surnameInput.value.trim();
+            const name = nameInput.value.trim();
+            const email = emailInput.value.trim();
+            const phone = phoneInput.value.trim();
+            hideErrors();
+            let isValid = true;
+            if (surname === '') 
+            {
+                showError(surnameInput, surnameError);
+                isValid = false;
+            }
+            if (name === '') 
+            {
+                showError(nameInput, nameError);
+                isValid = false;
+            }
+            if (email === '') 
+            {
+                showError(emailInput, emailError);
+                emailError.textContent = 'Введите email';
+                isValid = false;
+            } 
+            else if (!isValidEmail(email)) 
+            {
+                showError(emailInput, emailError);
+                emailError.textContent = 'Введите корректный email (пример: name@mail.ru)';
+                isValid = false;
+            }
+            if (phone === '') 
+            {
+                showError(phoneInput, phoneError);
+                phoneError.textContent = 'Введите номер телефона';
+                isValid = false;
+            } 
+            else if (!isValidPhone(phone)) 
+            {
+                showError(phoneInput, phoneError);
+                phoneError.textContent = 'Введите минимум 10 цифр (можно с +, -, пробелами)';
+                isValid = false;
+            }
+            if (isValid) 
+            {
+                showResult(surname, name, email, phone);
+            } 
+            else 
+            {
+                resultBlock.style.display = 'none';
+            }
+        });
+        
+        if (localStorage.getItem('theme') === 'dark') 
+        {
+            document.body.classList.add('dark-mode');
+            themeButton.textContent = 'Светлый режим';
+        } 
+        else 
+        {
+            themeButton.textContent = 'Ночной режим';
+        }
+
+        themeButton.addEventListener('click', function() 
+        {
+            document.body.classList.toggle('dark-mode');
+
+            if (document.body.classList.contains('dark-mode')) 
+            {
+                localStorage.setItem('theme', 'dark');
+                themeButton.textContent = 'Светлый режим';
+            } 
+            else 
+            {
+                localStorage.setItem('theme', 'light');
+                themeButton.textContent = 'Ночной режим';
+            }
+        });
+
+        const allInputs = [surnameInput, nameInput, emailInput, phoneInput];
+        allInputs.forEach(input => 
+        {
+            input.addEventListener('input', function() 
+            {
+                this.classList.remove('error-input');
+                if (this.id === 'surname') surnameError.style.display = 'none';
+                if (this.id === 'name') nameError.style.display = 'none';
+                if (this.id === 'email') emailError.style.display = 'none';
+                if (this.id === 'phone') phoneError.style.display = 'none';
+            });
+        });
+    </script>
+</body>
+</html>
